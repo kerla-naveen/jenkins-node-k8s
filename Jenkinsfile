@@ -22,7 +22,7 @@ pipeline {
                 sh '''
                 docker build -t my-k8s-node-app:${BUILD_NUMBER} .
 
-                docker tag my-k8s-node-app:${BUILD_NUMBER} yashodaadarsh/my-k8s-node-app:${BUILD_NUMBER}
+                docker tag my-k8s-node-app:${BUILD_NUMBER} naveenkerla/my-k8s-node-app:${BUILD_NUMBER}
                 '''
             }
         }
@@ -37,7 +37,7 @@ pipeline {
                     sh '''
                     echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 
-                    docker push yashodaadarsh/my-k8s-node-app:${BUILD_NUMBER}
+                    docker push naveenkerla/my-k8s-node-app:${BUILD_NUMBER}
 
                     docker logout
                     '''
@@ -60,10 +60,10 @@ pipeline {
             steps {
                 sh '''
                 # Load image into Minikube
-                minikube image load yashodaadarsh/my-k8s-node-app:${BUILD_NUMBER}
+                minikube image load naveenkerla/my-k8s-node-app:${BUILD_NUMBER}
 
                 # Update deployment image
-                sed -i "s|image:.*|image: yashodaadarsh/my-k8s-node-app:${BUILD_NUMBER}|g" k8s/deployment.yaml
+                sed -i "s|image:.*|image: naveenkerla/my-k8s-node-app:${BUILD_NUMBER}|g" k8s/deployment.yaml
 
                 # Apply manifests
                 kubectl apply -f k8s/deployment.yaml
